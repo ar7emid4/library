@@ -34,6 +34,10 @@
         </form>
     </dialog>
 
+    <div class="book-list">
+
+    </div>
+
     <script>
         const myLibrary = [];
 
@@ -48,14 +52,11 @@
             this.read = read;
         }
 
-        function addBookToLibrary(title, author, pages, read) {
-            myLibrary.push(new Book(title, author, pages, read));
-        }
-
         function displayLibrary(library) {
+            document.querySelector(".book-list").textContent = "";
             for (let book of library) {
                 let bookCard = document.createElement("div");
-                document.querySelector("body").appendChild(bookCard);
+                document.querySelector(".book-list").appendChild(bookCard);
 
                 let bookTitle = document.createElement("p");
                 bookTitle.textContent = book.title;
@@ -75,9 +76,10 @@
             }
         }
 
-        addBookToLibrary("title", "author", "pages", "read");
-
-        displayLibrary(myLibrary);
+        function addBookToLibrary(title, author, pages, read) {
+            myLibrary.push(new Book(title, author, pages, read));
+            displayLibrary(myLibrary);
+        }
 
         let showDialogButton = document.querySelector("#show-dialog-btn");
         let dialog = document.querySelector("dialog");
@@ -88,9 +90,13 @@
             event.preventDefault();
 
             let formData = new FormData(newBookForm);
-            console.log(Object.fromEntries(formData));
+            let formEntries = (Object.fromEntries(formData));
             dialog.close();
+
+            addBookToLibrary(formEntries.title, formEntries.author, formEntries.pages, formEntries.read)
         })
+
+        addBookToLibrary("title", "author", "pages", "read");
 
     </script>
 </body>
