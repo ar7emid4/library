@@ -7,6 +7,33 @@
 </head>
 <body>
 
+    <button id="show-dialog-btn">New Book</button>
+
+    <dialog closedby="any">
+        <form class="new-book-form" method="dialog">
+            <label for="title">Book title:</label>
+            <input id="title" name="title" type="text">
+
+            <label for="author">Book author:</label>
+            <input id="author" name="author" type="text">
+
+            <label for="pages">Book pages:</label>
+            <input id="pages" name="pages" type="text">
+
+            <fieldset>
+                <legend>Book is read:</legend>
+
+                <label for="isRead">Yes</label>
+                <input id="isRead" name="read" value="true" type="radio">
+
+                <label for="notRead">No</label>
+                <input id="notRead" name="read" value="false" type="radio">
+            </fieldset>
+
+            <button id="submit-dialog-btn">Add Book</button>
+        </form>
+    </dialog>
+
     <script>
         const myLibrary = [];
 
@@ -50,9 +77,21 @@
 
         addBookToLibrary("title", "author", "pages", "read");
 
-        console.log(myLibrary)
-
         displayLibrary(myLibrary);
+
+        let showDialogButton = document.querySelector("#show-dialog-btn");
+        let dialog = document.querySelector("dialog");
+        showDialogButton.addEventListener("click", () => dialog.show());
+
+        let newBookForm = document.querySelector(".new-book-form");
+        newBookForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            let formData = new FormData(newBookForm);
+            console.log(Object.fromEntries(formData));
+            dialog.close();
+        })
+
     </script>
 </body>
 </html>
