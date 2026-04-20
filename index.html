@@ -63,6 +63,11 @@
             this.read = read;
         }
 
+        Book.prototype.toggleReadStatus = function() {
+            if (this.read == "Read") this.read = "Unread"
+            else this.read = "Read";
+        }
+
         function displayLibrary(library) {
             document.querySelector("tbody").textContent = "";
             for (let i = library.length - 1; i >= 0; i--) {
@@ -82,7 +87,13 @@
                 tableRow.appendChild(bookPages);
 
                 let bookRead = document.createElement("td");
-                bookRead.textContent = library[i].read;
+                let readBtn = document.createElement("button");
+                readBtn.textContent = library[i].read;
+                readBtn.addEventListener("click", () => {
+                    library[i].toggleReadStatus();
+                    readBtn.textContent = library[i].read;
+                });
+                bookRead.appendChild(readBtn);
                 tableRow.appendChild(bookRead);
 
                 let bookDelete = document.createElement("td");
@@ -118,7 +129,7 @@
             addBookToLibrary(formEntries.title, formEntries.author, formEntries.pages, formEntries.read)
         })
 
-        addBookToLibrary("title", "author", "pages", "read");
+        addBookToLibrary("title", "author", "pages", "Read");
     </script>
 </body>
 </html>
