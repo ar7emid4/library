@@ -1,0 +1,36 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+table {
+    border-collapse: collapse;
+    width: 50%;
+    margin-top: 10px;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){
+    background-color: #f2f2f2
+}
+
+th {
+    background-color: rosybrown;
+    color: white;
+}
+
+table button {
+    width: 70%;
+    background-color: lightgray;
+    border: rgb(187, 187, 187) solid 3px;
+    border-radius: 15px;
+}
+
+tr :nth-last-child(1), tr :nth-last-child(2){
+    text-align: center;
+}
