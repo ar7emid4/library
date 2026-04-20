@@ -24,19 +24,30 @@
                 <legend>Book is read:</legend>
 
                 <label for="isRead">Yes</label>
-                <input id="isRead" name="read" value="true" type="radio">
+                <input id="isRead" name="read" value="Read" type="radio">
 
                 <label for="notRead">No</label>
-                <input id="notRead" name="read" value="false" type="radio">
+                <input id="notRead" name="read" value="Unread" type="radio">
             </fieldset>
 
             <button id="submit-dialog-btn">Add Book</button>
         </form>
     </dialog>
 
-    <div class="book-list">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Author</th>
+                <th>Pages</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
 
-    </div>
+        </tbody>
+    </table>
 
     <script>
         const myLibrary = [];
@@ -53,26 +64,36 @@
         }
 
         function displayLibrary(library) {
-            document.querySelector(".book-list").textContent = "";
-            for (let book of library) {
-                let bookCard = document.createElement("div");
-                document.querySelector(".book-list").appendChild(bookCard);
+            document.querySelector("tbody").textContent = "";
+            for (let i = library.length - 1; i >= 0; i--) {
+                let tableRow = document.createElement("tr");
+                document.querySelector("tbody").appendChild(tableRow);
 
-                let bookTitle = document.createElement("p");
-                bookTitle.textContent = book.title;
-                bookCard.appendChild(bookTitle);
+                let bookTitle = document.createElement("td");
+                bookTitle.textContent = library[i].title;
+                tableRow.appendChild(bookTitle);
 
-                let bookAuthor = document.createElement("p");
-                bookAuthor.textContent = book.author;
-                bookCard.appendChild(bookAuthor);
+                let bookAuthor = document.createElement("td");
+                bookAuthor.textContent = library[i].author;
+                tableRow.appendChild(bookAuthor);
 
-                let bookPages = document.createElement("p");
-                bookPages.textContent = book.pages;
-                bookCard.appendChild(bookPages);
+                let bookPages = document.createElement("td");
+                bookPages.textContent = library[i].pages;
+                tableRow.appendChild(bookPages);
 
-                let bookRead = document.createElement("p");
-                bookRead.textContent = book.read;
-                bookCard.appendChild(bookRead);
+                let bookRead = document.createElement("td");
+                bookRead.textContent = library[i].read;
+                tableRow.appendChild(bookRead);
+
+                let bookDelete = document.createElement("td");
+                let deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "Delete";
+                deleteBtn.addEventListener("click", (event) => {
+                event.target.parentElement.parentElement.remove();
+                library.splice(i, 1);
+                });
+                bookDelete.appendChild(deleteBtn);
+                tableRow.appendChild(bookDelete);
             }
         }
 
@@ -92,12 +113,12 @@
             let formData = new FormData(newBookForm);
             let formEntries = (Object.fromEntries(formData));
             dialog.close();
+            newBookForm.reset();
 
             addBookToLibrary(formEntries.title, formEntries.author, formEntries.pages, formEntries.read)
         })
 
         addBookToLibrary("title", "author", "pages", "read");
-
     </script>
 </body>
 </html>
