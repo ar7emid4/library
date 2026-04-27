@@ -51,48 +51,46 @@
     </table>
 
     <script>
-        const myLibrary = [];
-
-        function Book(title, author, pages, read) {
-            if (!new.target) {
-                throw Error("You must use the 'new' operator to call the constructor");
+        class Book {
+            constructor (title, author, pages, read) {
+                this.title = title;
+                this.author = author;
+                this.pages = pages;
+                this.read = read;
             }
 
-            this.title = title;
-            this.author = author;
-            this.pages = pages;
-            this.read = read;
+            toggleReadStatus () {
+                this.read == "Read" ? this.read = "Unread" : this.read = "Read";
+            }
         }
 
-        Book.prototype.toggleReadStatus = function() {
-            if (this.read == "Read") this.read = "Unread"
-            else this.read = "Read";
-        }
+        class Library {
+            myLibrary = [];
 
-        function displayLibrary(library) {
+            displayLibrary() {
             document.querySelector("tbody").textContent = "";
-            for (let i = library.length - 1; i >= 0; i--) {
+            for (let i = this.myLibrary.length - 1; i >= 0; i--) {
                 let tableRow = document.createElement("tr");
                 document.querySelector("tbody").appendChild(tableRow);
 
                 let bookTitle = document.createElement("td");
-                bookTitle.textContent = library[i].title;
+                bookTitle.textContent = this.myLibrary[i].title;
                 tableRow.appendChild(bookTitle);
 
                 let bookAuthor = document.createElement("td");
-                bookAuthor.textContent = library[i].author;
+                bookAuthor.textContent = this.myLibrary[i].author;
                 tableRow.appendChild(bookAuthor);
 
                 let bookPages = document.createElement("td");
-                bookPages.textContent = library[i].pages;
+                bookPages.textContent = this.myLibrary[i].pages;
                 tableRow.appendChild(bookPages);
 
                 let bookRead = document.createElement("td");
                 let readBtn = document.createElement("button");
-                readBtn.textContent = library[i].read;
+                readBtn.textContent = this.myLibrary[i].read;
                 readBtn.addEventListener("click", () => {
-                    library[i].toggleReadStatus();
-                    readBtn.textContent = library[i].read;
+                    this.myLibrary[i].toggleReadStatus();
+                    readBtn.textContent = this.myLibrary[i].read;
                 });
                 bookRead.appendChild(readBtn);
                 tableRow.appendChild(bookRead);
@@ -102,17 +100,21 @@
                 deleteBtn.textContent = "Delete";
                 deleteBtn.addEventListener("click", (event) => {
                 event.target.parentElement.parentElement.remove();
-                library.splice(i, 1);
+                this.myLibrary.splice(i, 1);
                 });
                 bookDelete.appendChild(deleteBtn);
                 tableRow.appendChild(bookDelete);
+                }
             }
+
+            addBookToLibrary(title, author, pages, read) {
+                this.myLibrary.push(new Book(title, author, pages, read));
+                this.displayLibrary();
+            }
+
         }
 
-        function addBookToLibrary(title, author, pages, read) {
-            myLibrary.push(new Book(title, author, pages, read));
-            displayLibrary(myLibrary);
-        }
+        let libraryClass = new Library();
 
         let showDialogButton = document.querySelector("#show-dialog-btn");
         let dialog = document.querySelector("dialog");
@@ -127,10 +129,10 @@
             dialog.close();
             newBookForm.reset();
 
-            addBookToLibrary(formEntries.title, formEntries.author, formEntries.pages, formEntries.read)
+            libraryClass.addBookToLibrary(formEntries.title, formEntries.author, formEntries.pages, formEntries.read);
         })
 
-        addBookToLibrary("Norwegian Wood", "Haruki Murakami", "296", "Read");
+        libraryClass.addBookToLibrary("Norwegian Wood", "Haruki Murakami", "296", "Read");
     </script>
 </body>
 </html>
