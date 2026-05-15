@@ -13,13 +13,13 @@
     <dialog closedby="any">
         <form class="new-book-form" method="dialog">
             <label for="title">Book title:</label>
-            <input id="title" name="title" type="text">
+            <input id="title" name="title" type="text" required>
 
             <label for="author">Book author:</label>
-            <input id="author" name="author" type="text">
+            <input id="author" name="author" type="text" required>
 
             <label for="pages">Book pages:</label>
-            <input id="pages" name="pages" type="text">
+            <input id="pages" name="pages" type="text" required>
 
             <fieldset>
                 <legend>Book is read:</legend>
@@ -28,7 +28,7 @@
                 <input id="isRead" name="read" value="Read" type="radio">
 
                 <label for="notRead">No</label>
-                <input id="notRead" name="read" value="Unread" type="radio">
+                <input id="notRead" name="read" value="Unread" type="radio" checked>
             </fieldset>
 
             <button id="submit-dialog-btn">Add Book</button>
@@ -133,6 +133,19 @@
         })
 
         libraryClass.addBookToLibrary("Norwegian Wood", "Haruki Murakami", "296", "Read");
+
+        let titleInput = document.querySelector("#title");
+        let authorInput = document.querySelector("#author");
+        let pagesInput = document.querySelector("#pages");
+
+        titleInput.addEventListener("invalid", () => titleInput.setCustomValidity("You must enter the title of the book"));
+        titleInput.addEventListener("input", () => titleInput.setCustomValidity(""));
+
+        authorInput.addEventListener("invalid", () => authorInput.setCustomValidity("You must enter the author of the book"));
+        authorInput.addEventListener("input", () => authorInput.setCustomValidity(""));
+
+        pagesInput.addEventListener("invalid", () => pagesInput.setCustomValidity("You must enter the number of pages in the book"));
+        pagesInput.addEventListener("input", () => pagesInput.setCustomValidity(""));
     </script>
 </body>
 </html>
